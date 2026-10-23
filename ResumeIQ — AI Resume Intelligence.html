@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ResumeIQ — AI Resume Intelligence</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f8fa;--card:#fff;--ink:#14213d;--mute:#5b6478;--line:#dfe3ea;--acc:#2f5bea;--accink:#fff;--ok:#1a7f4b;--warn:#a35f00;--bad:#b42318}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1524;--card:#171f33;--ink:#eef1f7;--mute:#9aa4bb;--line:#2b3550;--acc:#7b9bff;--accink:#0f1524;--ok:#4cc38a;--warn:#e0a040;--bad:#ff7b6e}}
+:root[data-theme="dark"]{--bg:#0f1524;--card:#171f33;--ink:#eef1f7;--mute:#9aa4bb;--line:#2b3550;--acc:#7b9bff;--accink:#0f1524;--ok:#4cc38a;--warn:#e0a040;--bad:#ff7b6e}
+html{scroll-padding-top:70px;scroll-behavior:smooth}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--line);z-index:5;display:flex;align-items:center;gap:18px;padding:12px 20px;flex-wrap:wrap}
+nav b{font-size:19px;margin-right:auto}nav a{text-decoration:none;font-size:14px;color:var(--mute)}
+.btn{background:var(--acc);color:var(--accink);border:0;border-radius:10px;padding:11px 18px;font:600 15px inherit;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:disabled{opacity:.45;cursor:not-allowed}.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.hero{padding:64px 0 40px}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.06;margin:0 0 16px;letter-spacing:-.02em;max-width:15em}
+.hero p{font-size:18px;color:var(--mute);max-width:36em}.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.tag{font-size:14px;color:var(--mute)}
+h2{font-size:26px;margin:48px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{margin:0 0 4px;font-size:16px}.card p{margin:0;color:var(--mute);font-size:14px}
+ol.steps{padding-left:20px;color:var(--mute)}ol.steps li{margin:6px 0}ol.steps b{color:var(--ink)}
+.ws h2{margin-top:56px}.sec{margin:16px 0}.sec h3{margin:0 0 4px;font-size:19px}.sec>p{margin:0 0 14px;color:var(--mute);font-size:14px}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:30px 16px;text-align:center;transition:.15s}
+.drop.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+input[type=text],input[type=url],textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:180px;resize:vertical}label{font-size:14px;font-weight:600;display:block;margin:12px 0 4px}
+.msg{font-size:14px;margin:10px 0}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin:2px;font-size:13px}
+.or{text-align:center;color:var(--mute);margin:14px 0;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.q{border-top:1px solid var(--line);padding:12px 0}.q .row{margin-top:8px}.q button{padding:6px 12px;font-size:13px}
+.hidden{display:none}footer{margin:60px 0 30px;color:var(--mute);font-size:13px}
+details summary{cursor:pointer;font-weight:600}
+</style></head><body>
+<nav><b>ResumeIQ</b><a href="#features">Features</a><a href="#how">How it works</a><a href="#start">Workspace</a><button class="btn" id="resetBtn" style="padding:7px 12px;font-size:13px">Clear saved data</button></nav>
+
+<div class="wrap">
+<header class="hero"><h1>Build a Resume That Matches Your Next Opportunity.</h1>
+<p>Upload your resume, share a job description, and see exactly which requirements your own experience already covers. Then answer a few questions and export a tailored PDF.</p>
+<div class="row"><a class="btn" href="#start">Create My Tailored Resume</a><a class="btn alt" href="#how">Explore How It Works</a></div>
+<p class="tag">Your Experience. The Right Opportunity. A Resume That Fits.</p></header>
+
+<section id="features"><h2>What works in this version</h2><div class="grid">
+<div class="card"><h3>Resume upload</h3><p>Real PDF and DOCX text extraction, in your browser.</p></div>
+<div class="card"><h3>Job requirement analysis</h3><p>Skills found in the posting, ranked by its own wording.</p></div>
+<div class="card"><h3>Evidence matching</h3><p>Each requirement checked against your resume text.</p></div>
+<div class="card"><h3>Country rules</h3><p>Format guidance per target country.</p></div>
+<div class="card"><h3>Clarifying questions</h3><p>Asked only where evidence is missing. Skip anything.</p></div>
+<div class="card"><h3>Coverage report</h3><p>Transparent keyword coverage score with its formula.</p></div>
+<div class="card"><h3>Editable draft + PDF</h3><p>Edit the text, then download a real PDF.</p></div>
+<div class="card"><h3>Saved locally</h3><p>Progress survives refresh. Nothing leaves your device.</p></div></div></section>
+
+<section id="how"><h2>How it works</h2><ol class="steps"><li><b>Upload your resume.</b> PDF or DOCX.</li><li><b>Add the job description.</b> Paste the text.</li><li><b>Analyze.</b> Requirements are matched to your resume.</li><li><b>Answer questions.</b> Only about gaps in evidence.</li><li><b>Download.</b> Review the draft, then export a PDF.</li></ol>
+<div class="card"><b>Not included in this preview:</b> <span style="color:var(--mute);font-size:14px">accounts, a database, job URL fetching, live company research, AI rewriting, cover letters, DOCX export, and multi-application dashboards. Those need a server and API keys; a browser-only page can't run them honestly. See the notes after the workspace.</span></div></section>
+</div>
+
+<main class="wrap ws" id="start">
+<h2>Create Your Tailored Resume</h2>
+
+<div class="card sec"><h3>1. Upload your existing resume</h3><p>Upload your current resume so we can read your skills, experience, projects, education, and achievements.</p>
+<div class="drop" id="drop"><p style="margin:0 0 10px;color:var(--mute)">Drag and drop your file here, or browse your device.</p>
+<button class="btn" id="pick">Upload Resume</button><input type="file" id="file" accept=".pdf,.docx" class="hidden">
+<div class="tag" style="margin-top:8px">PDF or DOCX, up to 5 MB</div></div>
+<div id="fileinfo" class="msg hidden"><span id="fname"></span> <button class="btn alt" id="replace" style="padding:4px 10px;font-size:13px">Replace</button> <button class="btn alt" id="remove" style="padding:4px 10px;font-size:13px">Remove</button></div>
+<div class="bar hidden" id="prog"><i style="width:0"></i></div><div class="msg" id="status" aria-live="polite"></div>
+<div id="extracted" class="hidden"><label for="rtext">Extracted text (review and correct)</label><textarea id="rtext"></textarea>
+<div class="msg">Skills detected in the text: <span id="found"></span></div><div class="tag">A skill that is not listed is not treated as missing. You'll be asked about it later.</div></div>
+<details style="margin-top:12px"><summary>Extraction failed or scanned PDF? Enter details manually</summary><p class="tag">Scanned PDFs need OCR, which isn't configured here. Paste your resume text below instead.</p><button class="btn alt" id="manual">Type or paste my resume</button></details></div>
+
+<div class="card sec"><h3>2. Add the job description</h3><p>Provide the job posting so we can understand the role, required skills, responsibilities, and qualifications.</p>
+<input type="url" id="jurl" placeholder="Paste the job posting URL here…" aria-label="Job posting URL"><div class="row" style="margin-top:8px"><button class="btn alt" id="fetchBtn">Fetch Job Details</button></div><div class="msg" id="urlmsg" aria-live="polite"></div>
+<div class="or">OR</div><label for="jd">Paste Job Description</label>
+<textarea id="jd" placeholder="Copy the complete job description from LinkedIn, Naukri, Indeed, or a company careers page and paste it here…"></textarea>
+<div class="row" style="justify-content:space-between;align-items:center;margin-top:6px"><span class="tag" id="count">0 characters</span><button class="btn alt" id="clearjd" style="padding:6px 12px;font-size:13px">Clear</button></div></div>
+
+<div class="card sec"><h3>3. Select your target country</h3><p>This sets the format guidance used in your draft.</p>
+<select id="country" aria-label="Target country"><option value="">Choose a country…</option></select>
+<label for="city">Target city or region (optional)</label><input type="text" id="city">
+<div class="msg" id="crules"></div></div>
+
+<details class="card sec"><summary>4. Company information (optional)</summary><label for="co">Company name</label><input type="text" id="co"><label for="role">Target job title</label><input type="text" id="role"><p class="tag">Stored with your application. Live company research isn't available in this version, and none is claimed.</p></details>
+
+<div class="row"><button class="btn" id="analyze" disabled>Analyze Job & Tailor My Resume</button></div><div class="msg" id="why"></div>
+
+<div id="results" class="hidden">
+<h2>Requirement match</h2><div id="matchtbl" style="overflow-x:auto"></div>
+<h2>Let's strengthen your resume</h2><p class="tag">We found areas where more information would help us represent your experience accurately. Answer only what is true; skip the rest.</p><div id="qs"></div>
+<h2>Coverage report</h2><div class="card" id="report"></div>
+<h2>Review and download</h2><label for="draft">Resume draft (editable)</label><textarea id="draft" style="min-height:340px"></textarea>
+<div class="row"><button class="btn" id="pdf">Download PDF</button></div><div class="msg" id="dlmsg" aria-live="polite"></div></div>
+</main>
+<div class="wrap"><footer><b>Setup notes.</b> Everything here runs in your browser; your resume and job text are stored only in this browser's localStorage. The analysis is dictionary-based keyword matching, not AI, and the coverage score is not an employer ATS score. To build the full product (Next.js, PostgreSQL, object storage, LLM-based extraction and research, SSRF-safe job URL retrieval, DOCX export), run it on a server with your own API keys. Ask and I'll draft that architecture and schema.</footer></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const $=id=>document.getElementById(id), MAX=5*1024*1024, KEY='resumeiq.v1';
+const COUNTRIES={'United States':'Usually called a resume, 1 page (2 if senior). Omit photo, age, marital status. Use US spelling. Don\'t state work authorization unless it is true and relevant.',
+'United Kingdom':'Usually called a CV, about 2 pages. Omit photo and date of birth. Use British spelling.','India':'Resumes of 1–2 pages are common; some employers expect more personal details. Include only what you are comfortable sharing.',
+'Canada':'1–2 pages, no photo. Mention work authorization only if true. Use Canadian spelling.','Australia':'2–3 pages are common; include referee availability if you wish. Use Australian spelling.',
+'Germany':'Tabular CV, 1–2 pages. Photo is optional, not required. Keep dates exact.','Ireland':'CV of about 2 pages. No photo. Use British/Irish spelling.','Netherlands':'1–2 page CV; photo optional. Keep it factual and concise.',
+'Singapore':'1–2 pages. Include work authorization only if true. Keep it concise.','Other':'Check local conventions for length, photo, and personal details before sending.'};
+const SKILLS=`Java,Python,JavaScript,TypeScript,C#,C++,Go,Rust,Kotlin,Swift,PHP,Ruby,Scala,SQL,Spring Boot,Spring,Hibernate,Node.js,Express,React,Angular,Vue,Next.js,Django,Flask,FastAPI,.NET,GraphQL,REST,Microservices,PostgreSQL,MySQL,MongoDB,Redis,Elasticsearch,Kafka,RabbitMQ,Oracle,DynamoDB,AWS,Azure,GCP,Docker,Kubernetes,Terraform,Ansible,Jenkins,GitHub Actions,GitLab CI,CI/CD,Linux,Git,Helm,Prometheus,Grafana,Machine Learning,Deep Learning,PyTorch,TensorFlow,LLM,NLP,Spark,Hadoop,Airflow,Snowflake,Tableau,Power BI,Selenium,JUnit,Agile,Scrum,System Design,Cloud,DevOps,Security,Leadership,Mentoring,Communication`.split(',');
+let S={rtext:'',fname:'',jd:'',url:'',country:'',city:'',co:'',role:'',answers:{},analyzed:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rx=k=>new RegExp('(^|[^A-Za-z0-9+#])'+k.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')+'(?![A-Za-z0-9+#])','i');
+const has=(t,k)=>rx(k).test(t);
+
+Object.keys(COUNTRIES).forEach(c=>{const o=document.createElement('option');o.textContent=c;$('country').appendChild(o)});
+function status(t,cls){const s=$('status');s.textContent=t;s.className='msg '+(cls||'')}
+function setProg(p){const b=$('prog');b.classList.remove('hidden');b.firstChild.style.width=p+'%'}
+function showExtracted(){$('extracted').classList.remove('hidden');$('rtext').value=S.rtext;foundSkills()}
+function foundSkills(){const f=SKILLS.filter(k=>has(S.rtext,k));$('found').innerHTML=f.length?f.map(k=>`<span class="chip">${esc(k)}</span>`).join(''):'none matched';}
+
+async function handle(f){
+ if(!f)return;const ext=f.name.split('.').pop().toLowerCase();
+ if(!['pdf','docx'].includes(ext)){status('Unsupported file type. Upload a PDF or DOCX.','bad');return}
+ if(f.size>MAX){status('File is larger than 5 MB. Upload a smaller file.','bad');return}
+ $('fname').textContent=f.name+' ('+Math.round(f.size/1024)+' KB)';$('fileinfo').classList.remove('hidden');
+ try{status('Uploading resume…');setProg(15);const buf=await new Promise((res,rej)=>{const r=new FileReader();r.onprogress=e=>e.lengthComputable&&setProg(15*e.loaded/e.total+10);r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('read'));r.readAsArrayBuffer(f)});
+ status('Extracting content…');setProg(40);let text='';
+ if(ext==='docx'){text=(await mammoth.extractRawText({arrayBuffer:buf})).value}
+ else{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const c=await pg.getTextContent();let line='',y=null;c.items.forEach(it=>{const yy=Math.round(it.transform[5]);if(y!==null&&Math.abs(yy-y)>3)line+='\n';line+=it.str+' ';y=yy});text+=line+'\n';setProg(40+50*i/pdf.numPages)}}
+ text=text.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+ if(text.length<80)throw new Error('empty');
+ S.rtext=text;S.fname=f.name;S.analyzed=false;save();setProg(100);status('Resume uploaded and text extracted. Review it below.','ok');showExtracted();refresh();
+ }catch(e){setProg(0);$('prog').classList.add('hidden');status(e.message==='empty'?'We found almost no text. This may be a scanned PDF (OCR is not configured). Upload another file or use "Type or paste my resume".':'We couldn\'t read this file. Try another file or enter your resume manually.','bad')}
+}
+$('pick').onclick=()=>$('file').click();$('replace').onclick=()=>$('file').click();$('file').onchange=e=>handle(e.target.files[0]);
+['dragenter','dragover'].forEach(v=>$('drop').addEventListener(v,e=>{e.preventDefault();$('drop').classList.add('on')}));
+['dragleave','drop'].forEach(v=>$('drop').addEventListener(v,e=>{e.preventDefault();$('drop').classList.remove('on')}));
+$('drop').addEventListener('drop',e=>handle(e.dataTransfer.files[0]));
+$('remove').onclick=()=>{S.rtext='';S.fname='';save();$('fileinfo').classList.add('hidden');$('extracted').classList.add('hidden');$('prog').classList.add('hidden');$('file').value='';status('');refresh()};
+$('manual').onclick=()=>{$('extracted').classList.remove('hidden');$('rtext').focus();status('Paste your resume text below.')};
+$('rtext').oninput=e=>{S.rtext=e.target.value;save();foundSkills();refresh()};
+
+$('fetchBtn').onclick=()=>{const v=$('jurl').value.trim();let ok=false;try{const u=new URL(v);ok=/^https?:$/.test(u.protocol)}catch(e){}
+ const m=$('urlmsg');if(!ok){m.className='msg bad';m.textContent='That doesn\'t look like a valid http(s) URL.';return}
+ S.url=v;save();m.className='msg warn';m.textContent='We couldn\'t retrieve this job posting automatically. Fetching needs a server-side service, which isn\'t part of this version, and many sites require sign-in or block automated access. Please paste the job description below.';$('jd').focus()};
+$('jd').oninput=e=>{S.jd=e.target.value;$('count').textContent=S.jd.length.toLocaleString()+' characters';save();refresh()};
+$('clearjd').onclick=()=>{if(!S.jd||confirm('Clear the job description?')){S.jd='';$('jd').value='';$('count').textContent='0 characters';save();refresh()}};
+$('country').onchange=e=>{S.country=e.target.value;$('crules').textContent=COUNTRIES[S.country]||'';$('crules').className='msg tag';save();refresh()};
+['city','co','role'].forEach(i=>$(i).oninput=e=>{S[i]=e.target.value;save()});
+function refresh(){const miss=[];if(S.rtext.trim().length<80)miss.push('a resume');if(S.jd.trim().length<80)miss.push('a job description (at least a few lines)');if(!S.country)miss.push('a target country');
+ $('analyze').disabled=!!miss.length;$('why').textContent=miss.length?'Still needed: '+miss.join(', ')+'.':'';$('why').className='msg tag'}
+
+function parseJD(jd){const lines=jd.split(/\n+/);const out=[];
+ SKILLS.forEach(k=>{if(!has(jd,k))return;if(k==='Spring'&&has(jd,'Spring Boot')&&!/Spring(?! Boot)/i.test(jd))return;
+  const hits=lines.filter(l=>has(l,k));let sc=0,pref=false,req=false;
+  hits.forEach(l=>{if(/prefer|nice to have|bonus|a plus|good to have|desirable|optional/i.test(l)){pref=true}else if(/required|must|mandatory|minimum|proficien|strong|expert|\d\+?\s*years/i.test(l)){req=true}});
+  const cls=req&&!pref?'Mandatory':pref&&!req?'Preferred':req?'Mandatory':'Unclear';out.push({k,cls,n:hits.length,why:hits[0].trim().slice(0,110)})});
+ return out}
+let REQ=[];
+function evidence(k){const a=S.answers[k];if(has(S.rtext,k))return{st:'Demonstrated',ev:'Found in resume text'};if(a&&a.v==='yes')return{st:'Self-reported',ev:a.t?'Your answer: '+a.t.slice(0,80):'Your answer: yes'};if(a&&a.v==='no')return{st:'Confirmed gap',ev:'You said no'};return{st:'Needs clarification',ev:'No evidence found'}}
+function render(){REQ=parseJD(S.jd);const rows=REQ.map(r=>{const e=evidence(r.k);return `<tr><td>${esc(r.k)}</td><td>${r.cls}</td><td>${esc(e.ev)}</td><td>${e.st}</td></tr>`}).join('');
+ $('matchtbl').innerHTML=REQ.length?`<table><tr><th>Skill</th><th>Importance</th><th>Candidate evidence</th><th>Status</th></tr>${rows}</table><p class="tag">Importance comes from the wording of the lines that mention each skill ("required", "preferred", etc.), not frequency. "Unclear" means the posting doesn't say. This list only covers ${SKILLS.length} known technologies.</p>`:'<p class="msg warn">No known technologies were found in this description. Check that you pasted the full posting.</p>';
+ const need=REQ.filter(r=>evidence(r.k).st==='Needs clarification');
+ $('qs').innerHTML=need.length?need.map(r=>`<div class="q" data-k="${esc(r.k)}"><b>Have you worked with ${esc(r.k)} in a professional, academic, or personal project?</b><div class="row"><button class="btn alt" data-v="yes">Yes</button><button class="btn alt" data-v="no">No</button><button class="btn alt" data-v="skip">Skip</button></div><div class="fu hidden"><label>Briefly describe how you used it (stays in your words)</label><input type="text"><button class="btn" style="margin-top:8px;padding:7px 14px">Save answer</button></div></div>`).join(''):'<p class="msg ok">No open questions. Every detected requirement has evidence.</p>';
+ report();draft()}
+$('qs').onclick=e=>{const q=e.target.closest('.q');if(!q)return;const k=q.dataset.k;
+ if(e.target.dataset.v){const v=e.target.dataset.v;if(v==='yes'){q.querySelector('.fu').classList.remove('hidden');S.answers[k]={v:'yes',t:''}}else{S.answers[k]={v};save();render()}}
+ else if(e.target.closest('.fu')&&e.target.tagName==='BUTTON'){S.answers[k]={v:'yes',t:q.querySelector('input').value.trim()};save();render()}};
+function report(){const m=REQ.filter(r=>r.cls==='Mandatory'),p=REQ.filter(r=>r.cls==='Preferred');
+ const cov=a=>a.filter(r=>['Demonstrated','Self-reported'].includes(evidence(r.k).st)).length;
+ const pct=(a,b)=>b?Math.round(100*a/b):null;const mp=pct(cov(m),m.length),pp=pct(cov(p),p.length);
+ const all=REQ.filter(r=>r.cls!=='Unclear');const ov=pct(cov(all),all.length);
+ const gaps=REQ.filter(r=>evidence(r.k).st==='Confirmed gap').map(r=>r.k),open=REQ.filter(r=>evidence(r.k).st==='Needs clarification').map(r=>r.k);
+ $('report').innerHTML=`<div style="font-size:30px;font-weight:700">${ov===null?'n/a':ov+'%'}</div><div class="bar" style="margin:8px 0"><i style="width:${ov||0}%"></i></div>
+ <p>Keyword coverage of requirements classified Mandatory or Preferred. Mandatory: ${mp===null?'none found':mp+'% ('+cov(m)+' of '+m.length+')'}. Preferred: ${pp===null?'none found':pp+'% ('+cov(p)+' of '+p.length+')'}.</p>
+ <p>Confirmed gaps: ${gaps.join(', ')||'none'}. Still needing clarification: ${open.join(', ')||'none'}.</p>
+ <p class="tag"><b>How this is calculated:</b> covered requirements ÷ total requirements, where covered means the skill appears in your resume text or you confirmed it. It is a simple coverage measure from this page only. It is not an employer ATS score and does not predict interviews. It doesn't assess formatting, experience depth, or domain fit.</p>`}
+function draft(){const conf=REQ.filter(r=>['Demonstrated','Self-reported'].includes(evidence(r.k).st)).map(r=>r.k);
+ const add=Object.entries(S.answers).filter(([k,a])=>a.v==='yes'&&a.t).map(([k,a])=>`- ${k}: ${a.t}`);
+ const t=S.rtext.trim()+(conf.length?`\n\nSKILLS RELEVANT TO ${(S.role||'THIS ROLE').toUpperCase()}\n${conf.join(', ')}`:'')+(add.length?`\n\nADDITIONAL EXPERIENCE (from your answers)\n${add.join('\n')}`:'');
+ if(!$('draft').dataset.edited||$('draft').dataset.base!==S.rtext+'|'+S.country){ $('draft').value=t;$('draft').dataset.base=S.rtext+'|'+S.country;$('draft').dataset.edited=''} else if(confirm('Your edited draft will be kept. Press OK to keep it, Cancel to rebuild it from your latest answers.')===false){$('draft').value=t;$('draft').dataset.edited=''}}
+$('draft').oninput=()=>$('draft').dataset.edited='1';
+$('analyze').onclick=()=>{S.analyzed=true;save();$('results').classList.remove('hidden');render();$('results').scrollIntoView()};
+$('pdf').onclick=()=>{try{const {jsPDF}=window.jspdf;const d=new jsPDF({unit:'pt',format:S.country==='United States'||S.country==='Canada'?'letter':'a4'});
+ const w=d.internal.pageSize.getWidth()-100,h=d.internal.pageSize.getHeight()-80;let y=56;d.setFont('helvetica','normal');d.setFontSize(10.5);
+ $('draft').value.split('\n').forEach(l=>{const hd=l.length>3&&l===l.toUpperCase()&&/[A-Z]/.test(l);d.setFont('helvetica',hd?'bold':'normal');d.setFontSize(hd?12:10.5);if(hd)y+=6;d.splitTextToSize(l||' ',w).forEach(s=>{if(y>h){d.addPage();y=56}d.text(s,50,y);y+=14})});
+ d.save('tailored-resume.pdf');$('dlmsg').className='msg ok';$('dlmsg').textContent='PDF generated and downloaded.'}catch(e){$('dlmsg').className='msg bad';$('dlmsg').textContent='PDF generation failed. Check that the draft isn\'t empty and try again.'}};
+$('resetBtn').onclick=()=>{if(confirm('Delete all saved resume and job data from this browser?')){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
+
+// restore
+$('jd').value=S.jd;$('jurl').value=S.url;$('count').textContent=S.jd.length.toLocaleString()+' characters';$('city').value=S.city;$('co').value=S.co;$('role').value=S.role;
+if(S.country){$('country').value=S.country;$('crules').textContent=COUNTRIES[S.country]||'';$('crules').className='msg tag'}
+if(S.rtext){showExtracted();if(S.fname){$('fname').textContent=S.fname;$('fileinfo').classList.remove('hidden')}}
+refresh();if(S.analyzed){$('results').classList.remove('hidden');render()}
+</script></body></html>
