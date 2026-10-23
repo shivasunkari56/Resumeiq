@@ -112,6 +112,7 @@ let S={rtext:'',fname:'',jd:'',url:'',country:'',city:'',co:'',role:'',answers:{
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clean=t=>t.replace(/[\uF000-\uF8FF\u2022\u25CF\u25AA\u25E6\u2023\u2043\u00B7]/g,'\u2022').replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014\u2212]/g,'-').replace(/\u2026/g,'...').replace(/\uFB01/g,'fi').replace(/\uFB02/g,'fl').replace(/[\u00A0\u2000-\u200B\u202F]/g,' ').replace(/[^\n\t\x20-\x7E\xA0-\xFF\u2022]/g,'').replace(/[ \t]{2,}/g,' ');
 const rx=k=>new RegExp('(^|[^A-Za-z0-9+#])'+k.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')+'(?![A-Za-z0-9+#])','i');
 const has=(t,k)=>rx(k).test(t);
 
@@ -131,7 +132,7 @@ async function handle(f){
  if(ext==='docx'){text=(await mammoth.extractRawText({arrayBuffer:buf})).value}
  else{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   const pdf=await pdfjsLib.getDocument({data:buf}).promise;for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const c=await pg.getTextContent();let line='',y=null;c.items.forEach(it=>{const yy=Math.round(it.transform[5]);if(y!==null&&Math.abs(yy-y)>3)line+='\n';line+=it.str+' ';y=yy});text+=line+'\n';setProg(40+50*i/pdf.numPages)}}
- text=text.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+ text=clean(text).replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
  if(text.length<80)throw new Error('empty');
  S.rtext=text;S.fname=f.name;S.analyzed=false;save();setProg(100);status('Resume uploaded and text extracted. Review it below.','ok');showExtracted();refresh();
  }catch(e){setProg(0);$('prog').classList.add('hidden');status(e.message==='empty'?'We found almost no text. This may be a scanned PDF (OCR is not configured). Upload another file or use "Type or paste my resume".':'We couldn\'t read this file. Try another file or enter your resume manually.','bad')}
@@ -187,7 +188,7 @@ $('draft').oninput=()=>$('draft').dataset.edited='1';
 $('analyze').onclick=()=>{S.analyzed=true;save();$('results').classList.remove('hidden');render();$('results').scrollIntoView()};
 $('pdf').onclick=()=>{try{const {jsPDF}=window.jspdf;const d=new jsPDF({unit:'pt',format:S.country==='United States'||S.country==='Canada'?'letter':'a4'});
  const w=d.internal.pageSize.getWidth()-100,h=d.internal.pageSize.getHeight()-80;let y=56;d.setFont('helvetica','normal');d.setFontSize(10.5);
- $('draft').value.split('\n').forEach(l=>{const hd=l.length>3&&l===l.toUpperCase()&&/[A-Z]/.test(l);d.setFont('helvetica',hd?'bold':'normal');d.setFontSize(hd?12:10.5);if(hd)y+=6;d.splitTextToSize(l||' ',w).forEach(s=>{if(y>h){d.addPage();y=56}d.text(s,50,y);y+=14})});
+ clean($('draft').value).split('\n').forEach(l=>{l=l.trim();const b=l.startsWith('\u2022');if(b)l=l.slice(1).trim();const hd=!b&&l.length>3&&l===l.toUpperCase()&&/[A-Z]/.test(l);d.setFont('helvetica',hd?'bold':'normal');d.setFontSize(hd?12:10.5);if(hd)y+=6;const x=b?64:50;d.splitTextToSize(l||' ',w-(x-50)).forEach((s,k)=>{if(y>h){d.addPage();y=56}if(b&&k===0)d.circle(55,y-3.5,1.5,'F');d.text(s,x,y);y+=14})});
  d.save('tailored-resume.pdf');$('dlmsg').className='msg ok';$('dlmsg').textContent='PDF generated and downloaded.'}catch(e){$('dlmsg').className='msg bad';$('dlmsg').textContent='PDF generation failed. Check that the draft isn\'t empty and try again.'}};
 $('resetBtn').onclick=()=>{if(confirm('Delete all saved resume and job data from this browser?')){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
 
